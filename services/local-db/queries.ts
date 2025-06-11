@@ -1,5 +1,12 @@
 import { Platform } from 'react-native';
-import { Asset, Transaction, Debt, CreateAssetInput, CreateTransactionInput, CreateDebtInput } from '@/types';
+import {
+  Asset,
+  Transaction,
+  Debt,
+  CreateAssetInput,
+  CreateTransactionInput,
+  CreateDebtInput,
+} from '@/types';
 
 const DEMO_USER_ID = 'demo-user';
 
@@ -83,16 +90,19 @@ const mockDebts: Debt[] = [
 // Asset Queries
 export const getAssets = async (db: any): Promise<Asset[]> => {
   if (Platform.OS === 'web' || db.mock) {
-    return mockAssets.filter(asset => !asset.isDeleted);
+    return mockAssets.filter((asset) => !asset.isDeleted);
   }
 
-  const assets = await db.getAllAsync<any>(`
+  const assets = await db.getAllAsync<any>(
+    `
     SELECT * FROM assets 
     WHERE user_id = ? AND is_deleted = 0 
     ORDER BY created_at DESC
-  `, [DEMO_USER_ID]);
+  `,
+    [DEMO_USER_ID],
+  );
 
-  return assets.map(asset => ({
+  return assets.map((asset) => ({
     id: asset.id,
     userId: asset.user_id,
     name: asset.name,
@@ -104,7 +114,10 @@ export const getAssets = async (db: any): Promise<Asset[]> => {
   }));
 };
 
-export const createAsset = async (db: any, input: CreateAssetInput): Promise<string> => {
+export const createAsset = async (
+  db: any,
+  input: CreateAssetInput,
+): Promise<string> => {
   const id = `asset_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   const now = new Date().toISOString();
 
@@ -123,19 +136,26 @@ export const createAsset = async (db: any, input: CreateAssetInput): Promise<str
     return id;
   }
 
-  await db.runAsync(`
+  await db.runAsync(
+    `
     INSERT INTO assets (id, user_id, name, type, current_value, created_at, updated_at)
     VALUES (?, ?, ?, ?, ?, ?, ?)
-  `, [id, DEMO_USER_ID, input.name, input.type, input.currentValue, now, now]);
+  `,
+    [id, DEMO_USER_ID, input.name, input.type, input.currentValue, now, now],
+  );
 
   return id;
 };
 
-export const updateAsset = async (db: any, id: string, updates: Partial<CreateAssetInput>): Promise<void> => {
+export const updateAsset = async (
+  db: any,
+  id: string,
+  updates: Partial<CreateAssetInput>,
+): Promise<void> => {
   const now = new Date().toISOString();
 
   if (Platform.OS === 'web' || db.mock) {
-    const assetIndex = mockAssets.findIndex(asset => asset.id === id);
+    const assetIndex = mockAssets.findIndex((asset) => asset.id === id);
     if (assetIndex !== -1) {
       mockAssets[assetIndex] = {
         ...mockAssets[assetIndex],
@@ -168,10 +188,13 @@ export const updateAsset = async (db: any, id: string, updates: Partial<CreateAs
     values.push(id);
     values.push(DEMO_USER_ID);
 
-    await db.runAsync(`
+    await db.runAsync(
+      `
       UPDATE assets SET ${fields.join(', ')} 
       WHERE id = ? AND user_id = ?
-    `, values);
+    `,
+      values,
+    );
   }
 };
 
@@ -179,7 +202,7 @@ export const deleteAsset = async (db: any, id: string): Promise<void> => {
   const now = new Date().toISOString();
 
   if (Platform.OS === 'web' || db.mock) {
-    const assetIndex = mockAssets.findIndex(asset => asset.id === id);
+    const assetIndex = mockAssets.findIndex((asset) => asset.id === id);
     if (assetIndex !== -1) {
       mockAssets[assetIndex].isDeleted = true;
       mockAssets[assetIndex].updatedAt = now;
@@ -187,22 +210,29 @@ export const deleteAsset = async (db: any, id: string): Promise<void> => {
     return;
   }
 
-  await db.runAsync(`
+  await db.runAsync(
+    `
     UPDATE assets SET is_deleted = 1, updated_at = ? 
     WHERE id = ? AND user_id = ?
-  `, [now, id, DEMO_USER_ID]);
+  `,
+    [now, id, DEMO_USER_ID],
+  );
 };
 
 // Transaction Queries
-export const getTransactions = async (db: any, limit = 50): Promise<Transaction[]> => {
+export const getTransactions = async (
+  db: any,
+  limit = 50,
+): Promise<Transaction[]> => {
   if (Platform.OS === 'web' || db.mock) {
     return mockTransactions
-      .filter(transaction => !transaction.isDeleted)
+      .filter((transaction) => !transaction.isDeleted)
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
       .slice(0, limit);
   }
 
-  const transactions = await db.getAllAsync<any>(`
+  const transactions = await db.getAllAsync<any>(
+    `
     SELECT t.*, a.name as asset_name, d.name as debt_name
     FROM transactions t
     LEFT JOIN assets a ON t.asset_id = a.id
@@ -210,9 +240,11 @@ export const getTransactions = async (db: any, limit = 50): Promise<Transaction[
     WHERE t.user_id = ? AND t.is_deleted = 0 
     ORDER BY t.date DESC, t.created_at DESC
     LIMIT ?
-  `, [DEMO_USER_ID, limit]);
+  `,
+    [DEMO_USER_ID, limit],
+  );
 
-  return transactions.map(transaction => ({
+  return transactions.map((transaction) => ({
     id: transaction.id,
     userId: transaction.user_id,
     date: transaction.date,
@@ -227,7 +259,10 @@ export const getTransactions = async (db: any, limit = 50): Promise<Transaction[
   }));
 };
 
-export const createTransaction = async (db: any, input: CreateTransactionInput): Promise<string> => {
+export const createTransaction = async (
+  db: any,
+  input: CreateTransactionInput,
+): Promise<string> => {
   const id = `transaction_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   const now = new Date().toISOString();
 
@@ -249,9 +284,10 @@ export const createTransaction = async (db: any, input: CreateTransactionInput):
 
     // Update debt balance if transaction is linked to a debt
     if (input.debtId) {
-      const debtIndex = mockDebts.findIndex(d => d.id === input.debtId);
+      const debtIndex = mockDebts.findIndex((d) => d.id === input.debtId);
       if (debtIndex !== -1) {
-        const amountChange = input.type === 'income' ? input.amount : -input.amount;
+        const amountChange =
+          input.type === 'income' ? input.amount : -input.amount;
         mockDebts[debtIndex].currentBalance += amountChange;
         mockDebts[debtIndex].updatedAt = now;
       }
@@ -260,26 +296,48 @@ export const createTransaction = async (db: any, input: CreateTransactionInput):
   }
 
   await db.withTransactionAsync(async () => {
-    await db.runAsync(`
+    await db.runAsync(
+      `
       INSERT INTO transactions (id, user_id, date, description, amount, type, asset_id, debt_id, created_at, updated_at)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `, [id, DEMO_USER_ID, input.date, input.description, input.amount, input.type, input.assetId, input.debtId, now, now]);
+    `,
+      [
+        id,
+        DEMO_USER_ID,
+        input.date,
+        input.description,
+        input.amount,
+        input.type,
+        input.assetId,
+        input.debtId,
+        now,
+        now,
+      ],
+    );
 
     // Update debt balance if transaction is linked to a debt
     if (input.debtId) {
-      const amountChange = input.type === 'income' ? input.amount : -input.amount;
-      await db.runAsync(`
+      const amountChange =
+        input.type === 'income' ? input.amount : -input.amount;
+      await db.runAsync(
+        `
         UPDATE debts
         SET current_balance = current_balance + ?, updated_at = ?
         WHERE id = ? AND user_id = ?
-      `, [amountChange, now, input.debtId, DEMO_USER_ID]);
+      `,
+        [amountChange, now, input.debtId, DEMO_USER_ID],
+      );
     }
   });
 
   return id;
 };
 
-export const updateTransaction = async (db: any, id: string, updates: Partial<CreateTransactionInput>): Promise<void> => {
+export const updateTransaction = async (
+  db: any,
+  id: string,
+  updates: Partial<CreateTransactionInput>,
+): Promise<void> => {
   // Note: This is a simplified update. A full implementation would need to revert old balance changes and apply new ones.
   const now = new Date().toISOString();
   // ... implementation for mock and real db ...
@@ -294,16 +352,19 @@ export const deleteTransaction = async (db: any, id: string): Promise<void> => {
 // Debt Queries
 export const getDebts = async (db: any): Promise<Debt[]> => {
   if (Platform.OS === 'web' || db.mock) {
-    return mockDebts.filter(debt => !debt.isDeleted);
+    return mockDebts.filter((debt) => !debt.isDeleted);
   }
 
-  const debts = await db.getAllAsync<any>(`
+  const debts = await db.getAllAsync<any>(
+    `
     SELECT * FROM debts 
     WHERE user_id = ? AND is_deleted = 0 
     ORDER BY created_at DESC
-  `, [DEMO_USER_ID]);
+  `,
+    [DEMO_USER_ID],
+  );
 
-  return debts.map(debt => ({
+  return debts.map((debt) => ({
     id: debt.id,
     userId: debt.user_id,
     name: debt.name,
@@ -316,7 +377,10 @@ export const getDebts = async (db: any): Promise<Debt[]> => {
   }));
 };
 
-export const createDebt = async (db: any, input: CreateDebtInput): Promise<string> => {
+export const createDebt = async (
+  db: any,
+  input: CreateDebtInput,
+): Promise<string> => {
   const id = `debt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   const now = new Date().toISOString();
 
@@ -333,21 +397,41 @@ export const createDebt = async (db: any, input: CreateDebtInput): Promise<strin
     return id;
   }
 
-  await db.runAsync(`
+  await db.runAsync(
+    `
     INSERT INTO debts (id, user_id, name, type, current_balance, interest_rate, created_at, updated_at)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-  `, [id, DEMO_USER_ID, input.name, input.type, input.currentBalance, input.interestRate, now, now]);
+  `,
+    [
+      id,
+      DEMO_USER_ID,
+      input.name,
+      input.type,
+      input.currentBalance,
+      input.interestRate,
+      now,
+      now,
+    ],
+  );
 
   return id;
 };
 
-export const updateDebt = async (db: any, id: string, updates: Partial<CreateDebtInput>): Promise<void> => {
+export const updateDebt = async (
+  db: any,
+  id: string,
+  updates: Partial<CreateDebtInput>,
+): Promise<void> => {
   const now = new Date().toISOString();
-  
+
   if (Platform.OS === 'web' || db.mock) {
-    const debtIndex = mockDebts.findIndex(d => d.id === id);
+    const debtIndex = mockDebts.findIndex((d) => d.id === id);
     if (debtIndex !== -1) {
-      mockDebts[debtIndex] = { ...mockDebts[debtIndex], ...updates, updatedAt: now };
+      mockDebts[debtIndex] = {
+        ...mockDebts[debtIndex],
+        ...updates,
+        updatedAt: now,
+      };
     }
     return;
   }
@@ -378,48 +462,54 @@ export const updateDebt = async (db: any, id: string, updates: Partial<CreateDeb
     values.push(id);
     values.push(DEMO_USER_ID);
 
-    await db.runAsync(`
+    await db.runAsync(
+      `
       UPDATE debts SET ${fields.join(', ')} 
       WHERE id = ? AND user_id = ?
-    `, values);
+    `,
+      values,
+    );
   }
 };
 
 export const deleteDebt = async (db: any, id: string): Promise<void> => {
   const now = new Date().toISOString();
-  
+
   if (Platform.OS === 'web' || db.mock) {
-    const debtIndex = mockDebts.findIndex(d => d.id === id);
+    const debtIndex = mockDebts.findIndex((d) => d.id === id);
     if (debtIndex !== -1) {
       mockDebts[debtIndex].isDeleted = true;
       mockDebts[debtIndex].updatedAt = now;
     }
     return;
   }
-  
-  await db.runAsync(`
+
+  await db.runAsync(
+    `
     UPDATE debts SET is_deleted = 1, updated_at = ? 
     WHERE id = ? AND user_id = ?
-  `, [now, id, DEMO_USER_ID]);
+  `,
+    [now, id, DEMO_USER_ID],
+  );
 };
 
 // Dashboard Queries
 export const getDashboardData = async (db: any) => {
   if (Platform.OS === 'web' || db.mock) {
     const totalAssets = mockAssets
-      .filter(asset => !asset.isDeleted)
+      .filter((asset) => !asset.isDeleted)
       .reduce((sum, asset) => sum + asset.currentValue, 0);
-    
+
     const totalDebts = mockDebts
-      .filter(debt => !debt.isDeleted)
+      .filter((debt) => !debt.isDeleted)
       .reduce((sum, debt) => sum + debt.currentBalance, 0);
-    
+
     const netWorth = totalAssets - totalDebts;
 
     const assetBreakdown = mockAssets
-      .filter(asset => !asset.isDeleted)
+      .filter((asset) => !asset.isDeleted)
       .reduce((acc, asset) => {
-        const existing = acc.find(item => item.type === asset.type);
+        const existing = acc.find((item) => item.type === asset.type);
         if (existing) {
           existing.value += asset.currentValue;
           existing.count += 1;
@@ -435,7 +525,7 @@ export const getDashboardData = async (db: any) => {
       }, [] as any[]);
 
     // Calculate percentages
-    assetBreakdown.forEach(item => {
+    assetBreakdown.forEach((item) => {
       item.percentage = totalAssets > 0 ? (item.value / totalAssets) * 100 : 0;
     });
 
@@ -450,21 +540,28 @@ export const getDashboardData = async (db: any) => {
   }
 
   // Get total assets
-  const assetResult = await db.getFirstAsync<{ total: number }>(`
+  const assetResult = await db.getFirstAsync<{ total: number }>(
+    `
     SELECT COALESCE(SUM(current_value), 0) as total 
     FROM assets 
     WHERE user_id = ? AND is_deleted = 0
-  `, [DEMO_USER_ID]);
+  `,
+    [DEMO_USER_ID],
+  );
 
   // Get total debts
-  const debtResult = await db.getFirstAsync<{ total: number }>(`
+  const debtResult = await db.getFirstAsync<{ total: number }>(
+    `
     SELECT COALESCE(SUM(current_balance), 0) as total 
     FROM debts 
     WHERE user_id = ? AND is_deleted = 0
-  `, [DEMO_USER_ID]);
+  `,
+    [DEMO_USER_ID],
+  );
 
   // Get asset breakdown
-  const assetBreakdown = await db.getAllAsync<any>(`
+  const assetBreakdown = await db.getAllAsync<any>(
+    `
     SELECT 
       type,
       COUNT(*) as count,
@@ -473,7 +570,9 @@ export const getDashboardData = async (db: any) => {
     WHERE user_id = ? AND is_deleted = 0
     GROUP BY type
     ORDER BY value DESC
-  `, [DEMO_USER_ID]);
+  `,
+    [DEMO_USER_ID],
+  );
 
   const totalAssets = assetResult?.total || 0;
   const totalDebts = debtResult?.total || 0;
@@ -485,7 +584,7 @@ export const getDashboardData = async (db: any) => {
     netWorth,
     netWorthChange: 0, // TODO: Calculate based on historical data
     netWorthChangePercent: 0, // TODO: Calculate based on historical data
-    assetBreakdown: assetBreakdown.map(item => ({
+    assetBreakdown: assetBreakdown.map((item) => ({
       type: item.type,
       value: item.value,
       count: item.count,

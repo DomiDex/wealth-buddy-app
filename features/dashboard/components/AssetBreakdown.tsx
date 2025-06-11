@@ -55,12 +55,21 @@ export const AssetBreakdown: React.FC<Props> = ({ assets }) => {
       {assets.map((asset) => (
         <View key={asset.type} style={styles.assetRow}>
           <View style={styles.assetInfo}>
-            <View style={[styles.indicator, { backgroundColor: getAssetTypeColor(asset.type) }]} />
-            <Text style={styles.assetName}>{getAssetTypeLabel(asset.type)}</Text>
+            <View
+              style={[
+                styles.indicator,
+                { backgroundColor: getAssetTypeColor(asset.type) },
+              ]}
+            />
+            <Text style={styles.assetName}>
+              {getAssetTypeLabel(asset.type)}
+            </Text>
           </View>
           <View style={styles.assetValue}>
             <Text style={styles.value}>{formatCurrency(asset.value)}</Text>
-            <Text style={styles.percentage}>{asset.percentage.toFixed(1)}%</Text>
+            <Text style={styles.percentage}>
+              {asset.percentage.toFixed(1)}%
+            </Text>
           </View>
         </View>
       ))}

@@ -68,12 +68,12 @@ export const DebtCard: React.FC<Props> = ({ debt, onEdit, onDelete }) => {
           )}
         </View>
       </View>
-      
+
       <View style={styles.valueContainer}>
         <Text style={styles.valueLabel}>Current Balance</Text>
         <Text style={styles.value}>{formatCurrency(debt.currentBalance)}</Text>
       </View>
-      
+
       <View style={styles.footer}>
         <Text style={styles.lastUpdated}>
           Updated {new Date(debt.updatedAt).toLocaleDateString()}

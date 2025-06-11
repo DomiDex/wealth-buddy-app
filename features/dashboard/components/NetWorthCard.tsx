@@ -8,7 +8,11 @@ interface Props {
   changePercent: number;
 }
 
-export const NetWorthCard: React.FC<Props> = ({ netWorth, change, changePercent }) => {
+export const NetWorthCard: React.FC<Props> = ({
+  netWorth,
+  change,
+  changePercent,
+}) => {
   const isPositive = change >= 0;
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -21,7 +25,7 @@ export const NetWorthCard: React.FC<Props> = ({ netWorth, change, changePercent 
     <View style={styles.container}>
       <Text style={styles.label}>Net Worth</Text>
       <Text style={styles.amount}>{formatCurrency(netWorth)}</Text>
-      
+
       {change !== 0 && (
         <View style={styles.changeContainer}>
           {isPositive ? (
@@ -29,8 +33,14 @@ export const NetWorthCard: React.FC<Props> = ({ netWorth, change, changePercent 
           ) : (
             <TrendingDown size={16} color="#dc2626" />
           )}
-          <Text style={[styles.changeText, { color: isPositive ? '#059669' : '#dc2626' }]}>
-            {formatCurrency(Math.abs(change))} ({Math.abs(changePercent).toFixed(1)}%)
+          <Text
+            style={[
+              styles.changeText,
+              { color: isPositive ? '#059669' : '#dc2626' },
+            ]}
+          >
+            {formatCurrency(Math.abs(change))} (
+            {Math.abs(changePercent).toFixed(1)}%)
           </Text>
         </View>
       )}

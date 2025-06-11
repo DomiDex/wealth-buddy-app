@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, RefreshControl } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  RefreshControl,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDashboardData } from '@/features/dashboard/hooks/useDashboardData';
 import { NetWorthCard } from '@/features/dashboard/components/NetWorthCard';
@@ -12,7 +18,7 @@ export default function DashboardScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView 
+      <ScrollView
         style={styles.scrollView}
         refreshControl={
           <RefreshControl refreshing={isLoading} onRefresh={refetch} />
@@ -23,7 +29,7 @@ export default function DashboardScreen() {
           <Text style={styles.title}>Financial Overview</Text>
         </View>
 
-        <NetWorthCard 
+        <NetWorthCard
           netWorth={data?.netWorth || 0}
           change={data?.netWorthChange || 0}
           changePercent={data?.netWorthChangePercent || 0}
@@ -43,7 +49,7 @@ export default function DashboardScreen() {
         </View>
 
         <AssetBreakdown assets={data?.assetBreakdown || []} />
-        
+
         <RecentTransactions transactions={data?.recentTransactions || []} />
       </ScrollView>
     </SafeAreaView>

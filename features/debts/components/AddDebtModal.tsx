@@ -37,10 +37,13 @@ export const AddDebtModal: React.FC<Props> = ({ visible, onClose }) => {
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
     if (!name.trim()) newErrors.name = 'Debt name is required';
-    if (!currentBalance.trim()) newErrors.currentBalance = 'Current balance is required';
-    else if (isNaN(Number(currentBalance))) newErrors.currentBalance = 'Please enter a valid number';
-    if (interestRate.trim() && isNaN(Number(interestRate))) newErrors.interestRate = 'Please enter a valid number';
-    
+    if (!currentBalance.trim())
+      newErrors.currentBalance = 'Current balance is required';
+    else if (isNaN(Number(currentBalance)))
+      newErrors.currentBalance = 'Please enter a valid number';
+    if (interestRate.trim() && isNaN(Number(interestRate)))
+      newErrors.interestRate = 'Please enter a valid number';
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -104,10 +107,18 @@ export const AddDebtModal: React.FC<Props> = ({ visible, onClose }) => {
               {DEBT_TYPES.map((debtType) => (
                 <TouchableOpacity
                   key={debtType.value}
-                  style={[styles.typeButton, type === debtType.value && styles.typeButtonActive]}
+                  style={[
+                    styles.typeButton,
+                    type === debtType.value && styles.typeButtonActive,
+                  ]}
                   onPress={() => setType(debtType.value)}
                 >
-                  <Text style={[styles.typeButtonText, type === debtType.value && styles.typeButtonTextActive]}>
+                  <Text
+                    style={[
+                      styles.typeButtonText,
+                      type === debtType.value && styles.typeButtonTextActive,
+                    ]}
+                  >
                     {debtType.label}
                   </Text>
                 </TouchableOpacity>
@@ -117,7 +128,12 @@ export const AddDebtModal: React.FC<Props> = ({ visible, onClose }) => {
 
           <View style={styles.section}>
             <Text style={styles.label}>Current Balance</Text>
-            <View style={[styles.inputContainer, errors.currentBalance && styles.inputError]}>
+            <View
+              style={[
+                styles.inputContainer,
+                errors.currentBalance && styles.inputError,
+              ]}
+            >
               <DollarSign size={20} color="#6b7280" style={styles.inputIcon} />
               <TextInput
                 style={styles.inputWithIcon}
@@ -128,12 +144,19 @@ export const AddDebtModal: React.FC<Props> = ({ visible, onClose }) => {
                 keyboardType="numeric"
               />
             </View>
-            {errors.currentBalance && <Text style={styles.errorText}>{errors.currentBalance}</Text>}
+            {errors.currentBalance && (
+              <Text style={styles.errorText}>{errors.currentBalance}</Text>
+            )}
           </View>
 
           <View style={styles.section}>
             <Text style={styles.label}>Interest Rate (Optional)</Text>
-            <View style={[styles.inputContainer, errors.interestRate && styles.inputError]}>
+            <View
+              style={[
+                styles.inputContainer,
+                errors.interestRate && styles.inputError,
+              ]}
+            >
               <Percent size={20} color="#6b7280" style={styles.inputIcon} />
               <TextInput
                 style={styles.inputWithIcon}
@@ -144,7 +167,9 @@ export const AddDebtModal: React.FC<Props> = ({ visible, onClose }) => {
                 keyboardType="numeric"
               />
             </View>
-            {errors.interestRate && <Text style={styles.errorText}>{errors.interestRate}</Text>}
+            {errors.interestRate && (
+              <Text style={styles.errorText}>{errors.interestRate}</Text>
+            )}
           </View>
         </ScrollView>
 
@@ -153,7 +178,10 @@ export const AddDebtModal: React.FC<Props> = ({ visible, onClose }) => {
             <Text style={styles.cancelButtonText}>Cancel</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.submitButton, createDebtMutation.isPending && styles.submitButtonDisabled]}
+            style={[
+              styles.submitButton,
+              createDebtMutation.isPending && styles.submitButtonDisabled,
+            ]}
             onPress={handleSubmit}
             disabled={createDebtMutation.isPending}
           >
@@ -169,26 +197,92 @@ export const AddDebtModal: React.FC<Props> = ({ visible, onClose }) => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f8fafc' },
-  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 20, paddingTop: 60, backgroundColor: '#ffffff', borderBottomWidth: 1, borderBottomColor: '#e5e7eb' },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 20,
+    paddingTop: 60,
+    backgroundColor: '#ffffff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#e5e7eb',
+  },
   title: { fontSize: 20, fontWeight: '600', color: '#111827' },
-  closeButton: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#f3f4f6', justifyContent: 'center', alignItems: 'center' },
+  closeButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#f3f4f6',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   content: { flex: 1, padding: 20 },
   section: { marginBottom: 24 },
   label: { fontSize: 16, fontWeight: '600', color: '#374151', marginBottom: 8 },
-  input: { backgroundColor: '#ffffff', borderWidth: 1, borderColor: '#d1d5db', borderRadius: 12, padding: 16, fontSize: 16, color: '#111827' },
+  input: {
+    backgroundColor: '#ffffff',
+    borderWidth: 1,
+    borderColor: '#d1d5db',
+    borderRadius: 12,
+    padding: 16,
+    fontSize: 16,
+    color: '#111827',
+  },
   inputError: { borderColor: '#dc2626' },
-  inputContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#ffffff', borderWidth: 1, borderColor: '#d1d5db', borderRadius: 12, paddingHorizontal: 16 },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
+    borderWidth: 1,
+    borderColor: '#d1d5db',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+  },
   inputIcon: { marginRight: 12 },
-  inputWithIcon: { flex: 1, padding: 16, paddingLeft: 0, fontSize: 16, color: '#111827' },
-  typeButton: { backgroundColor: '#ffffff', borderWidth: 1, borderColor: '#d1d5db', borderRadius: 20, paddingHorizontal: 16, paddingVertical: 8, marginRight: 8 },
+  inputWithIcon: {
+    flex: 1,
+    padding: 16,
+    paddingLeft: 0,
+    fontSize: 16,
+    color: '#111827',
+  },
+  typeButton: {
+    backgroundColor: '#ffffff',
+    borderWidth: 1,
+    borderColor: '#d1d5db',
+    borderRadius: 20,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    marginRight: 8,
+  },
   typeButtonActive: { backgroundColor: '#1e40af', borderColor: '#1e40af' },
   typeButtonText: { fontSize: 14, color: '#6b7280', fontWeight: '500' },
   typeButtonTextActive: { color: '#ffffff' },
   errorText: { fontSize: 14, color: '#dc2626', marginTop: 4 },
-  footer: { flexDirection: 'row', padding: 20, paddingBottom: 40, backgroundColor: '#ffffff', borderTopWidth: 1, borderTopColor: '#e5e7eb', gap: 12 },
-  cancelButton: { flex: 1, backgroundColor: '#f3f4f6', borderRadius: 12, padding: 16, alignItems: 'center' },
+  footer: {
+    flexDirection: 'row',
+    padding: 20,
+    paddingBottom: 40,
+    backgroundColor: '#ffffff',
+    borderTopWidth: 1,
+    borderTopColor: '#e5e7eb',
+    gap: 12,
+  },
+  cancelButton: {
+    flex: 1,
+    backgroundColor: '#f3f4f6',
+    borderRadius: 12,
+    padding: 16,
+    alignItems: 'center',
+  },
   cancelButtonText: { fontSize: 16, fontWeight: '600', color: '#6b7280' },
-  submitButton: { flex: 1, backgroundColor: '#1e40af', borderRadius: 12, padding: 16, alignItems: 'center' },
+  submitButton: {
+    flex: 1,
+    backgroundColor: '#1e40af',
+    borderRadius: 12,
+    padding: 16,
+    alignItems: 'center',
+  },
   submitButtonDisabled: { opacity: 0.6 },
   submitButtonText: { fontSize: 16, fontWeight: '600', color: '#ffffff' },
 });

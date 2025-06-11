@@ -1,7 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Transaction } from '@/types';
-import { ArrowUpRight, ArrowDownRight, ArrowRightLeft } from 'lucide-react-native';
+import {
+  ArrowUpRight,
+  ArrowDownRight,
+  ArrowRightLeft,
+} from 'lucide-react-native';
 
 interface Props {
   transactions: Transaction[];
@@ -67,7 +71,12 @@ export const RecentTransactions: React.FC<Props> = ({ transactions }) => {
             <Text style={styles.description}>{transaction.description}</Text>
             <Text style={styles.date}>{formatDate(transaction.date)}</Text>
           </View>
-          <Text style={[styles.amount, { color: getTransactionColor(transaction.type) }]}>
+          <Text
+            style={[
+              styles.amount,
+              { color: getTransactionColor(transaction.type) },
+            ]}
+          >
             {transaction.type === 'expense' ? '-' : '+'}
             {formatCurrency(transaction.amount)}
           </Text>

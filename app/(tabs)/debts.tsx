@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Plus } from 'lucide-react-native';
 import { useDebts } from '@/features/debts/hooks/useDebts';
@@ -14,7 +20,7 @@ export default function DebtsScreen() {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Debts</Text>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.addButton}
           onPress={() => setShowAddModal(true)}
         >
@@ -23,10 +29,8 @@ export default function DebtsScreen() {
       </View>
 
       <ScrollView style={styles.scrollView}>
-        {debts?.map((debt) => (
-          <DebtCard key={debt.id} debt={debt} />
-        ))}
-        
+        {debts?.map((debt) => <DebtCard key={debt.id} debt={debt} />)}
+
         {!isLoading && (!debts || debts.length === 0) && (
           <View style={styles.emptyState}>
             <Text style={styles.emptyTitle}>No debts yet</Text>

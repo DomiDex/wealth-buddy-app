@@ -1,7 +1,18 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Settings, User, Database as DatabaseIcon, FolderSync as Sync } from 'lucide-react-native';
+import {
+  Settings,
+  User,
+  Database as DatabaseIcon,
+  FolderSync as Sync,
+} from 'lucide-react-native';
 
 export default function ProfileScreen() {
   return (
@@ -21,7 +32,7 @@ export default function ProfileScreen() {
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Account</Text>
-          
+
           <TouchableOpacity style={styles.menuItem}>
             <Settings size={24} color="#6b7280" />
             <Text style={styles.menuText}>Settings</Text>
@@ -40,7 +51,7 @@ export default function ProfileScreen() {
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Support</Text>
-          
+
           <TouchableOpacity style={styles.menuItem}>
             <Text style={styles.menuText}>Help & FAQ</Text>
           </TouchableOpacity>

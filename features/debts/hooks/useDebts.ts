@@ -1,6 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useDatabaseContext } from '@/services/local-db/DatabaseProvider';
-import { getDebts, createDebt, updateDebt, deleteDebt } from '@/services/local-db/queries';
+import {
+  getDebts,
+  createDebt,
+  updateDebt,
+  deleteDebt,
+} from '@/services/local-db/queries';
 import { CreateDebtInput } from '@/types';
 
 export const useDebts = () => {
@@ -37,7 +42,13 @@ export const useUpdateDebt = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, updates }: { id: string; updates: Partial<CreateDebtInput> }) => {
+    mutationFn: ({
+      id,
+      updates,
+    }: {
+      id: string;
+      updates: Partial<CreateDebtInput>;
+    }) => {
       if (!db) throw new Error('Database not ready');
       return updateDebt(db, id, updates);
     },

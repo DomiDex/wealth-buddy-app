@@ -1,6 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useDatabaseContext } from '@/services/local-db/DatabaseProvider';
-import { getTransactions, createTransaction, updateTransaction, deleteTransaction } from '@/services/local-db/queries';
+import {
+  getTransactions,
+  createTransaction,
+  updateTransaction,
+  deleteTransaction,
+} from '@/services/local-db/queries';
 import { CreateTransactionInput } from '@/types';
 
 export const useTransactions = (limit = 50) => {
@@ -37,7 +42,13 @@ export const useUpdateTransaction = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, updates }: { id: string; updates: Partial<CreateTransactionInput> }) => {
+    mutationFn: ({
+      id,
+      updates,
+    }: {
+      id: string;
+      updates: Partial<CreateTransactionInput>;
+    }) => {
       if (!db) throw new Error('Database not ready');
       return updateTransaction(db, id, updates);
     },

@@ -1,6 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useDatabaseContext } from '@/services/local-db/DatabaseProvider';
-import { getAssets, createAsset, updateAsset, deleteAsset } from '@/services/local-db/queries';
+import {
+  getAssets,
+  createAsset,
+  updateAsset,
+  deleteAsset,
+} from '@/services/local-db/queries';
 import { CreateAssetInput } from '@/types';
 
 export const useAssets = () => {
@@ -37,7 +42,13 @@ export const useUpdateAsset = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, updates }: { id: string; updates: Partial<CreateAssetInput> }) => {
+    mutationFn: ({
+      id,
+      updates,
+    }: {
+      id: string;
+      updates: Partial<CreateAssetInput>;
+    }) => {
       if (!db) throw new Error('Database not ready');
       return updateAsset(db, id, updates);
     },

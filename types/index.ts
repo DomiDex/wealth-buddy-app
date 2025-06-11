@@ -8,7 +8,7 @@ export const AssetTypeSchema = z.enum([
   'crypto',
   'real_estate',
   'vehicle',
-  'other'
+  'other',
 ]);
 
 export const AssetSchema = z.object({
@@ -23,11 +23,7 @@ export const AssetSchema = z.object({
 });
 
 // Transaction Types
-export const TransactionTypeSchema = z.enum([
-  'income',
-  'expense',
-  'transfer'
-]);
+export const TransactionTypeSchema = z.enum(['income', 'expense', 'transfer']);
 
 export const TransactionSchema = z.object({
   id: z.string(),
@@ -99,6 +95,15 @@ export interface AssetBreakdownItem {
 }
 
 // Form Types
-export type CreateAssetInput = Omit<Asset, 'id' | 'userId' | 'createdAt' | 'updatedAt' | 'isDeleted'>;
-export type CreateTransactionInput = Omit<Transaction, 'id' | 'userId' | 'createdAt' | 'updatedAt' | 'isDeleted'>;
-export type CreateDebtInput = Omit<Debt, 'id' | 'userId' | 'createdAt' | 'updatedAt' | 'isDeleted'>;
+export type CreateAssetInput = Omit<
+  Asset,
+  'id' | 'userId' | 'createdAt' | 'updatedAt' | 'isDeleted'
+>;
+export type CreateTransactionInput = Omit<
+  Transaction,
+  'id' | 'userId' | 'createdAt' | 'updatedAt' | 'isDeleted'
+>;
+export type CreateDebtInput = Omit<
+  Debt,
+  'id' | 'userId' | 'createdAt' | 'updatedAt' | 'isDeleted'
+>;

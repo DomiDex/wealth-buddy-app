@@ -1,6 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { ArrowUpRight, ArrowDownRight, ArrowRightLeft, CreditCard as Edit3, Trash2 } from 'lucide-react-native';
+import {
+  ArrowUpRight,
+  ArrowDownRight,
+  ArrowRightLeft,
+  CreditCard as Edit3,
+  Trash2,
+} from 'lucide-react-native';
 import { Transaction } from '@/types';
 
 interface Props {
@@ -9,7 +15,11 @@ interface Props {
   onDelete?: (transaction: Transaction) => void;
 }
 
-export const TransactionCard: React.FC<Props> = ({ transaction, onEdit, onDelete }) => {
+export const TransactionCard: React.FC<Props> = ({
+  transaction,
+  onEdit,
+  onDelete,
+}) => {
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -28,10 +38,11 @@ export const TransactionCard: React.FC<Props> = ({ transaction, onEdit, onDelete
     } else if (date.toDateString() === yesterday.toDateString()) {
       return 'Yesterday';
     } else {
-      return date.toLocaleDateString('en-US', { 
-        month: 'short', 
+      return date.toLocaleDateString('en-US', {
+        month: 'short',
         day: 'numeric',
-        year: date.getFullYear() !== today.getFullYear() ? 'numeric' : undefined
+        year:
+          date.getFullYear() !== today.getFullYear() ? 'numeric' : undefined,
       });
     }
   };
@@ -88,22 +99,35 @@ export const TransactionCard: React.FC<Props> = ({ transaction, onEdit, onDelete
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.transactionInfo}>
-          <View style={[styles.iconContainer, { backgroundColor: `${getTransactionColor(transaction.type)}15` }]}>
+          <View
+            style={[
+              styles.iconContainer,
+              { backgroundColor: `${getTransactionColor(transaction.type)}15` },
+            ]}
+          >
             {getTransactionIcon(transaction.type)}
           </View>
           <View style={styles.details}>
             <Text style={styles.description}>{transaction.description}</Text>
             <View style={styles.metadata}>
-              <Text style={styles.type}>{getTransactionTypeLabel(transaction.type)}</Text>
+              <Text style={styles.type}>
+                {getTransactionTypeLabel(transaction.type)}
+              </Text>
               <Text style={styles.separator}>•</Text>
               <Text style={styles.date}>{formatDate(transaction.date)}</Text>
             </View>
           </View>
         </View>
-        
+
         <View style={styles.rightSection}>
-          <Text style={[styles.amount, { color: getTransactionColor(transaction.type) }]}>
-            {getTransactionSign(transaction.type)}{formatCurrency(transaction.amount)}
+          <Text
+            style={[
+              styles.amount,
+              { color: getTransactionColor(transaction.type) },
+            ]}
+          >
+            {getTransactionSign(transaction.type)}
+            {formatCurrency(transaction.amount)}
           </Text>
           <View style={styles.actions}>
             {onEdit && (

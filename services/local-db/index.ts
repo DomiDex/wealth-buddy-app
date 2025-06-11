@@ -4,13 +4,14 @@ let db: any | null = null;
 
 export const initializeDatabase = async (): Promise<any> => {
   if (db) return db;
-  
+
   if (Platform.OS === 'web') {
     // Mock database for web platform
-    db = { 
+    db = {
       mock: true,
       execAsync: async (sql: string) => console.log('Mock execAsync:', sql),
-      runAsync: async (sql: string, params?: any[]) => console.log('Mock runAsync:', sql, params),
+      runAsync: async (sql: string, params?: any[]) =>
+        console.log('Mock runAsync:', sql, params),
       getAllAsync: async (sql: string, params?: any[]) => {
         console.log('Mock getAllAsync:', sql, params);
         return [];
@@ -25,11 +26,11 @@ export const initializeDatabase = async (): Promise<any> => {
     // Only import expo-sqlite on native platforms
     const SQLite = await import('expo-sqlite');
     db = await SQLite.openDatabaseAsync('finance.db');
-    
+
     // Enable foreign key support
     await db.execAsync('PRAGMA foreign_keys = ON;');
   }
-  
+
   return db;
 };
 

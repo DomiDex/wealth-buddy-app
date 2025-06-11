@@ -112,7 +112,11 @@ export const AddAssetModal: React.FC<Props> = ({ visible, onClose }) => {
 
           <View style={styles.section}>
             <Text style={styles.label}>Asset Type</Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.typeContainer}>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={styles.typeContainer}
+            >
               {ASSET_TYPES.map((assetType) => (
                 <TouchableOpacity
                   key={assetType.value}
@@ -137,7 +141,12 @@ export const AddAssetModal: React.FC<Props> = ({ visible, onClose }) => {
 
           <View style={styles.section}>
             <Text style={styles.label}>Current Value</Text>
-            <View style={[styles.inputContainer, errors.currentValue && styles.inputError]}>
+            <View
+              style={[
+                styles.inputContainer,
+                errors.currentValue && styles.inputError,
+              ]}
+            >
               <DollarSign size={20} color="#6b7280" style={styles.inputIcon} />
               <TextInput
                 style={styles.inputWithIcon}
@@ -159,7 +168,10 @@ export const AddAssetModal: React.FC<Props> = ({ visible, onClose }) => {
             <Text style={styles.cancelButtonText}>Cancel</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.submitButton, createAssetMutation.isPending && styles.submitButtonDisabled]}
+            style={[
+              styles.submitButton,
+              createAssetMutation.isPending && styles.submitButtonDisabled,
+            ]}
             onPress={handleSubmit}
             disabled={createAssetMutation.isPending}
           >

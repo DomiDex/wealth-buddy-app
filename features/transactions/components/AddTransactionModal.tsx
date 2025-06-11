@@ -20,7 +20,11 @@ interface Props {
   onClose: () => void;
 }
 
-const TRANSACTION_TYPES: { value: TransactionType; label: string; color: string }[] = [
+const TRANSACTION_TYPES: {
+  value: TransactionType;
+  label: string;
+  color: string;
+}[] = [
   { value: 'income', label: 'Income', color: '#059669' },
   { value: 'expense', label: 'Expense', color: '#dc2626' },
   { value: 'transfer', label: 'Transfer', color: '#3b82f6' },
@@ -102,13 +106,13 @@ export const AddTransactionModal: React.FC<Props> = ({ visible, onClose }) => {
 
   const getSelectedAssetName = () => {
     if (!selectedAssetId) return 'Select Asset (Optional)';
-    const asset = assets?.find(a => a.id === selectedAssetId);
+    const asset = assets?.find((a) => a.id === selectedAssetId);
     return asset ? asset.name : 'Select Asset (Optional)';
   };
 
   const getSelectedDebtName = () => {
     if (!selectedDebtId) return 'Select Debt (Optional)';
-    const debt = debts?.find(d => d.id === selectedDebtId);
+    const debt = debts?.find((d) => d.id === selectedDebtId);
     return debt ? debt.name : 'Select Debt (Optional)';
   };
 
@@ -146,7 +150,8 @@ export const AddTransactionModal: React.FC<Props> = ({ visible, onClose }) => {
                   <Text
                     style={[
                       styles.typeButtonText,
-                      type === transactionType.value && styles.typeButtonTextActive,
+                      type === transactionType.value &&
+                        styles.typeButtonTextActive,
                     ]}
                   >
                     {transactionType.label}
@@ -172,7 +177,12 @@ export const AddTransactionModal: React.FC<Props> = ({ visible, onClose }) => {
 
           <View style={styles.section}>
             <Text style={styles.label}>Amount</Text>
-            <View style={[styles.inputContainer, errors.amount && styles.inputError]}>
+            <View
+              style={[
+                styles.inputContainer,
+                errors.amount && styles.inputError,
+              ]}
+            >
               <DollarSign size={20} color="#6b7280" style={styles.inputIcon} />
               <TextInput
                 style={styles.inputWithIcon}
@@ -190,7 +200,9 @@ export const AddTransactionModal: React.FC<Props> = ({ visible, onClose }) => {
 
           <View style={styles.section}>
             <Text style={styles.label}>Date</Text>
-            <View style={[styles.inputContainer, errors.date && styles.inputError]}>
+            <View
+              style={[styles.inputContainer, errors.date && styles.inputError]}
+            >
               <Calendar size={20} color="#6b7280" style={styles.inputIcon} />
               <TextInput
                 style={styles.inputWithIcon}
@@ -200,9 +212,7 @@ export const AddTransactionModal: React.FC<Props> = ({ visible, onClose }) => {
                 placeholderTextColor="#9ca3af"
               />
             </View>
-            {errors.date && (
-              <Text style={styles.errorText}>{errors.date}</Text>
-            )}
+            {errors.date && <Text style={styles.errorText}>{errors.date}</Text>}
           </View>
 
           <View style={styles.section}>
@@ -211,7 +221,9 @@ export const AddTransactionModal: React.FC<Props> = ({ visible, onClose }) => {
               style={styles.pickerButton}
               onPress={() => setShowAssetPicker(!showAssetPicker)}
             >
-              <Text style={styles.pickerButtonText}>{getSelectedAssetName()}</Text>
+              <Text style={styles.pickerButtonText}>
+                {getSelectedAssetName()}
+              </Text>
               <ChevronDown size={20} color="#6b7280" />
             </TouchableOpacity>
             {showAssetPicker && (
@@ -247,7 +259,9 @@ export const AddTransactionModal: React.FC<Props> = ({ visible, onClose }) => {
               style={styles.pickerButton}
               onPress={() => setShowDebtPicker(!showDebtPicker)}
             >
-              <Text style={styles.pickerButtonText}>{getSelectedDebtName()}</Text>
+              <Text style={styles.pickerButtonText}>
+                {getSelectedDebtName()}
+              </Text>
               <ChevronDown size={20} color="#6b7280" />
             </TouchableOpacity>
             {showDebtPicker && (
@@ -285,13 +299,16 @@ export const AddTransactionModal: React.FC<Props> = ({ visible, onClose }) => {
           <TouchableOpacity
             style={[
               styles.submitButton,
-              createTransactionMutation.isPending && styles.submitButtonDisabled,
+              createTransactionMutation.isPending &&
+                styles.submitButtonDisabled,
             ]}
             onPress={handleSubmit}
             disabled={createTransactionMutation.isPending}
           >
             <Text style={styles.submitButtonText}>
-              {createTransactionMutation.isPending ? 'Adding...' : 'Add Transaction'}
+              {createTransactionMutation.isPending
+                ? 'Adding...'
+                : 'Add Transaction'}
             </Text>
           </TouchableOpacity>
         </View>

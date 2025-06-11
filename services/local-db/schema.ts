@@ -78,10 +78,10 @@ export const runMigrations = async (db: any): Promise<void> => {
     }
 
     console.log('Running database migrations...');
-    
+
     // For native platforms, run actual migrations
     const SQLite = await import('expo-sqlite');
-    
+
     await db.withTransactionAsync(async () => {
       // Create version table if it doesn't exist
       await db.execAsync(`
@@ -89,27 +89,30 @@ export const runMigrations = async (db: any): Promise<void> => {
           version INTEGER PRIMARY KEY
         );
       `);
-      
+
       // Get current version
       const result = await db.getFirstAsync<{ version: number }>(`
         SELECT version FROM schema_version ORDER BY version DESC LIMIT 1;
       `);
-      
+
       const currentVersion = result?.version || 0;
       const targetVersion = MIGRATIONS.length;
-      
+
       if (currentVersion < targetVersion) {
         // Run pending migrations
         for (let i = currentVersion; i < targetVersion; i++) {
           console.log(`Running migration ${i + 1}/${targetVersion}`);
           await db.execAsync(MIGRATIONS[i]);
         }
-        
+
         // Update version
-        await db.runAsync(`
+        await db.runAsync(
+          `
           INSERT OR REPLACE INTO schema_version (version) VALUES (?);
-        `, [targetVersion]);
-        
+        `,
+          [targetVersion],
+        );
+
         console.log(`Database migrated to version ${targetVersion}`);
       } else {
         console.log('Database is up to date');

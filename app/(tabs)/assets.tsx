@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Plus } from 'lucide-react-native';
 import { useAssets } from '@/features/assets/hooks/useAssets';
@@ -14,7 +20,7 @@ export default function AssetsScreen() {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Assets</Text>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.addButton}
           onPress={() => setShowAddModal(true)}
         >
@@ -23,10 +29,8 @@ export default function AssetsScreen() {
       </View>
 
       <ScrollView style={styles.scrollView}>
-        {assets?.map((asset) => (
-          <AssetCard key={asset.id} asset={asset} />
-        ))}
-        
+        {assets?.map((asset) => <AssetCard key={asset.id} asset={asset} />)}
+
         {!isLoading && (!assets || assets.length === 0) && (
           <View style={styles.emptyState}>
             <Text style={styles.emptyTitle}>No assets yet</Text>

@@ -1,6 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { TrendingUp, TrendingDown, CreditCard as Edit3, Trash2 } from 'lucide-react-native';
+import {
+  TrendingUp,
+  TrendingDown,
+  CreditCard as Edit3,
+  Trash2,
+} from 'lucide-react-native';
 import { Asset } from '@/types';
 
 interface Props {
@@ -56,9 +61,7 @@ export const AssetCard: React.FC<Props> = ({ asset, onEdit, onDelete }) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.assetInfo}>
-          <View style={styles.iconContainer}>
-            {getAssetIcon(asset.type)}
-          </View>
+          <View style={styles.iconContainer}>{getAssetIcon(asset.type)}</View>
           <View style={styles.details}>
             <Text style={styles.name}>{asset.name}</Text>
             <Text style={styles.type}>{getAssetTypeLabel(asset.type)}</Text>
@@ -83,12 +86,17 @@ export const AssetCard: React.FC<Props> = ({ asset, onEdit, onDelete }) => {
           )}
         </View>
       </View>
-      
+
       <View style={styles.valueContainer}>
         <Text style={styles.value}>{formatCurrency(asset.currentValue)}</Text>
-        <View style={[styles.indicator, { backgroundColor: getAssetTypeColor(asset.type) }]} />
+        <View
+          style={[
+            styles.indicator,
+            { backgroundColor: getAssetTypeColor(asset.type) },
+          ]}
+        />
       </View>
-      
+
       <View style={styles.footer}>
         <Text style={styles.lastUpdated}>
           Updated {new Date(asset.updatedAt).toLocaleDateString()}

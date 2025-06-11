@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Plus } from 'lucide-react-native';
 import { useTransactions } from '@/features/transactions/hooks/useTransactions';
@@ -14,7 +20,7 @@ export default function TransactionsScreen() {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Transactions</Text>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.addButton}
           onPress={() => setShowAddModal(true)}
         >
@@ -26,7 +32,7 @@ export default function TransactionsScreen() {
         {transactions?.map((transaction) => (
           <TransactionCard key={transaction.id} transaction={transaction} />
         ))}
-        
+
         {!isLoading && (!transactions || transactions.length === 0) && (
           <View style={styles.emptyState}>
             <Text style={styles.emptyTitle}>No transactions yet</Text>

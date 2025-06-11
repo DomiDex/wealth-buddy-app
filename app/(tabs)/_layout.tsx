@@ -1,5 +1,16 @@
 import { Tabs } from 'expo-router';
-import { BarChart3, CreditCard, TrendingUp, User, Landmark } from 'lucide-react-native';
+import {
+  BarChart3,
+  CreditCard,
+  TrendingUp,
+  User,
+  Landmark,
+} from 'lucide-react-native';
+
+interface TabBarIconProps {
+  size: number;
+  color: string;
+}
 
 export default function TabLayout() {
   return (
@@ -21,12 +32,13 @@ export default function TabLayout() {
           fontWeight: '500',
           marginTop: 4,
         },
-      }}>
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
           title: 'Dashboard',
-          tabBarIcon: ({ size, color }) => (
+          tabBarIcon: ({ size, color }: TabBarIconProps) => (
             <BarChart3 size={size} color={color} />
           ),
         }}
@@ -35,7 +47,7 @@ export default function TabLayout() {
         name="assets"
         options={{
           title: 'Assets',
-          tabBarIcon: ({ size, color }) => (
+          tabBarIcon: ({ size, color }: TabBarIconProps) => (
             <TrendingUp size={size} color={color} />
           ),
         }}
@@ -44,7 +56,7 @@ export default function TabLayout() {
         name="debts"
         options={{
           title: 'Debts',
-          tabBarIcon: ({ size, color }) => (
+          tabBarIcon: ({ size, color }: TabBarIconProps) => (
             <Landmark size={size} color={color} />
           ),
         }}
@@ -53,7 +65,7 @@ export default function TabLayout() {
         name="transactions"
         options={{
           title: 'Transactions',
-          tabBarIcon: ({ size, color }) => (
+          tabBarIcon: ({ size, color }: TabBarIconProps) => (
             <CreditCard size={size} color={color} />
           ),
         }}
@@ -62,7 +74,7 @@ export default function TabLayout() {
         name="profile"
         options={{
           title: 'Profile',
-          tabBarIcon: ({ size, color }) => (
+          tabBarIcon: ({ size, color }: TabBarIconProps) => (
             <User size={size} color={color} />
           ),
         }}
